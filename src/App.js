@@ -13,8 +13,8 @@ export  const App = observer( () => {
     return (
         <div className="App">
             <header className="App-header">
-                <Link to={"./basket"}>
-                    <button>перейти в корзину</button>
+                <Link to={"/basket"}>
+                    <button disabled={store.productsInBasket.length < 1}>перейти в корзину</button>
                 </Link>
                 <p>Продуктов в корзине:{store.productsInBasket.length}</p>
                 <Outlet/>
