@@ -1,19 +1,20 @@
 import styles from "./card.module.scss"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {store} from "../../store/store";
 
 export const Card = (props) => {
-    // if(props)
-    // debugger
-    // console.log(props)
+const navigate = useNavigate()
     return <div>
         <div className={styles.color}>{props.product.name}</div>
         <img className={styles.image} src={props.product.colors[0].images[0]}/>
  <div>
-     <Link to={`../product/${props.product.id}`}>
-     <button onClick={()=>{
-         console.log(props.product.id)
+
+     <button onClick={async ()=>{
+         await store.getProductById(props.product.id);
+         await store.getSizes();
+         navigate(`../product/${props.product.id}`)
      }}>Подробнее</button>
-     </Link>
+
  </div>
 
     </div>

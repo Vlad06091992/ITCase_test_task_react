@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM, {createRoot} from 'react-dom/client'
 
-import App from './App'
+import {App} from './App'
 
 import './styles/index.css'
 import {observer} from "mobx-react";
@@ -33,9 +33,9 @@ const RootComponent = observer(() => {
 
 
     return (
-        // <React.StrictMode>
+        <React.StrictMode>
         <RouterProvider router={router}/>
-        // </React.StrictMode>
+         </React.StrictMode>
     );
 });
 

@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
-import { getProducts } from "../../services/api";
-import { Card } from "../../components/card/card";
+import {useEffect} from "react";
+import {Card} from "../../components/card/card";
 import styles from './products.module.scss';
+import {store} from "../../store/store";
+import {observer} from "mobx-react";
 
-export const Products = () => {
-    const [products, setProducts] = useState();
+export const Products = observer(() => {
+    const products = store.products
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let productsData = await getProducts();
-                setProducts(productsData);
+             await store.getProducts();
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -24,4 +23,4 @@ export const Products = () => {
     }
 
     return <div>Loading...</div>;
-};
+});

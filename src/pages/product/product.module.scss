@@ -1,0 +1,19 @@
+.image{
+  max-width: 300px;
+  height: auto;
+}
+
+.container{
+  justify-content: center;
+  //display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.selects{
+  justify-content: center;
+  display: flex;
+  .select{
+    font-size: 16px;
+  }
+}

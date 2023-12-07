@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
 import {Outlet, useNavigate} from "react-router-dom";
+import {observer} from "mobx-react";
 
-export default function App() {
+export  const App = observer( () => {
     const navigate = useNavigate()
     useEffect(() => {
         navigate('./products')
@@ -16,4 +17,4 @@ export default function App() {
             </header>
         </div>
     )
-}
+})
