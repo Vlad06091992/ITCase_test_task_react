@@ -21,6 +21,5 @@ export const Products = observer(() => {
     if (products) {
         return <div className={styles.container}>{products.map(el => <Card key={el.id} product={el} />)}</div>;
     }
-
     return <div>Loading...</div>;
 });

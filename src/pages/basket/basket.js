@@ -3,11 +3,12 @@ import {store} from "../../store/store";
 import {useEffect, useState} from "react";
 import {getProductByData} from "../../utils/getProductByData";
 import {useNavigate} from "react-router-dom";
+import styles from './basket.module.scss'
 
 export const Basket = () => {
     const productsInBasket = toJS(store.productsInBasket);
     const [products, setProducts] = useState(null);
-const navigate = useNavigate()
+    const navigate = useNavigate()
     const fetchData = async () => {
         try {
             const promisesArray = productsInBasket.map(async (el) => {
@@ -34,10 +35,13 @@ const navigate = useNavigate()
     if (products) {
         return (
             <div>
-                <button onClick={()=>{navigate('../products')}}>Вернуться к продуктам</button>
-                <div style={{display: 'flex'}}>
+                <button className={styles.button} onClick={() => {
+                    navigate('../products')
+                }}>Вернуться к продуктам
+                </button>
+                <div className={styles.products}>
                     {products.map((el) => (
-                        <div key={el.name}>
+                        <div key={el.productIdUnical}>
                             <img style={{maxWidth: '300px', height: "auto"}} src={el.images[0]} alt={el.name}/>
                             <div>{el.name}</div>
                             <div>{el.description}</div>

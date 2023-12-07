@@ -1,12 +1,10 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {getProduct} from "../../services/api";
 import Select from "react-select";
 import {store} from "../../store/store";
 import {observer} from "mobx-react";
 import {getSizeToViewModel} from "../../utils/getSizeToViewModel";
 import styles from './product.module.scss'
-import {toJS} from "mobx";
 import {v4 as uuidv4} from 'uuid';
 
 export const Product = observer(() => {
@@ -14,6 +12,7 @@ export const Product = observer(() => {
     const currentProduct = store.currentProduct
     const currentColorProduct = store.currentColorProduct
     const sizes = store.sizes
+    const navigate = useNavigate()
 
     const [color, setColor] = useState(currentProduct?.colors?.map(el => ({
         id: el.id,
@@ -82,11 +81,9 @@ export const Product = observer(() => {
                 </button>
             </div>
             {store.isBasket && <p>Продукт уже был добавлен в корзину !!!</p>}
-
+            <button onClick={()=>{navigate('../products')}}>Вернуться к продуктам</button>
         </div>)
     } else {
         return <div>Loading...</div>;
-
     }
-
 })
