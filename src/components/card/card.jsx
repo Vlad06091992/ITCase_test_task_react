@@ -1,5 +1,5 @@
 import styles from "./card.module.scss"
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {store} from "../../store/store";
 
 export const Card = (props) => {
