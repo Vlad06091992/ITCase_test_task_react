@@ -1,6 +1,6 @@
-import {action, autorun, makeObservable, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 
-import {getProduct, getProducts, getProductColor,getSizes} from "../services/api";
+import {getProduct, getProductColor, getProducts, getSizes} from "../services/api";
 
 class DataStore {
     products = []
@@ -13,31 +13,39 @@ class DataStore {
     constructor() {
         makeObservable(this, {
             products: observable,
-            productsInBasket:observable,
+            productsInBasket: observable,
             currentProduct: observable,
-            currentColorProduct:observable,
-            sizes:observable,
-            currentSize:observable,
+            currentColorProduct: observable,
+            sizes: observable,
+            currentSize: observable,
             getProducts: action,
             getProductById: action,
-            getProductColor:action,
-            getSizes:action,
-            setCurrentSize:action,
-            setProductInbasket:action
+            getProductColor: action,
+            getSizes: action,
+            setCurrentSize: action,
+            setProductInbasket: action,
+            deleteProductFromBasket: action,
         });
     }
 
-    setProductInbasket(product){
+    deleteProductFromBasket(id) {
+        this.productsInBasket = this.productsInBasket.filter(el => el.productIdUnical !== id)
+    }
+
+    setProductInbasket(product) {
         this.productsInBasket.push(product)
     }
-    setCurrentSize(size){
+
+    setCurrentSize(size) {
         this.currentSize = size
     }
-    async getProductColor(productId,colorId) {
-        this.currentColorProduct =  await getProductColor(productId,colorId)
+
+    async getProductColor(productId, colorId) {
+        this.currentColorProduct = await getProductColor(productId, colorId)
     }
+
     async getProductById(productId) {
-       this.currentProduct =  await getProduct(productId)
+        this.currentProduct = await getProduct(productId)
     }
 
     async getProducts() {

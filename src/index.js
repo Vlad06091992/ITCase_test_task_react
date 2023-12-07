@@ -8,6 +8,7 @@ import {observer} from "mobx-react";
 import {Products} from "./pages/products/products";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Product} from "./pages/product/product";
+import {Basket} from "./pages/basket/basket";
 
 
 
@@ -24,6 +25,10 @@ const RootComponent = observer(() => {
                 {
                     path: '/product/:productId',
                     element: <Product/>
+                },
+                {
+                    path: '/basket',
+                    element: <Basket/>
                 }
                 ]
         },

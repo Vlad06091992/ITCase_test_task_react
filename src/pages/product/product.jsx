@@ -26,9 +26,6 @@ export const Product = observer(() => {
             }
         };
         fetchData()
-
-// console.log(currentColorProduct.sizes)
-
     }, []);
 
 
@@ -66,7 +63,6 @@ export const Product = observer(() => {
                 <button disabled={!size} onClick={()=>{
                     const productForBasket = {name:store.currentProduct.name,productIdUnical:uuidv4(),productId:store.currentProduct.id, color,size}
                     store.setProductInbasket(productForBasket)
-                    console.log(toJS(store.productsInBasket))
                 }}>Добавить в корзину</button>
             </div>
         </div>)
