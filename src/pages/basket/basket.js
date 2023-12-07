@@ -4,11 +4,15 @@ import {useEffect, useState} from "react";
 import {getProductByData} from "../../utils/getProductByData";
 import {useNavigate} from "react-router-dom";
 import styles from './basket.module.scss'
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Basket = () => {
     const productsInBasket = toJS(store.productsInBasket);
     const [products, setProducts] = useState(null);
     const navigate = useNavigate()
+
+    const notify = () => toast("товар удален из корзины!");
     const fetchData = async () => {
         try {
             const promisesArray = productsInBasket.map(async (el) => {
@@ -35,6 +39,7 @@ export const Basket = () => {
     if (products) {
         return (
             <div>
+                <ToastContainer autoClose={1500} position="top-center" theme={'colored'} />
                 <button className={styles.button} onClick={() => {
                     navigate('../products')
                 }}>Вернуться к продуктам
@@ -46,7 +51,9 @@ export const Basket = () => {
                             <div>{el.name}</div>
                             <div>{el.description}</div>
                             <div>{el.size}</div>
-                            <button onClick={() => handleDeleteProduct(el.productIdUnical)}>Удалить товар</button>
+                            <button onClick={() =>{
+                                notify()
+                                handleDeleteProduct(el.productIdUnical)}}>Удалить товар</button>
                         </div>
                     ))}
                 </div>

@@ -6,6 +6,8 @@ import {observer} from "mobx-react";
 import {getSizeToViewModel} from "../../utils/getSizeToViewModel";
 import styles from './product.module.scss'
 import {v4 as uuidv4} from 'uuid';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Product = observer(() => {
     const {productId} = useParams()
@@ -13,7 +15,7 @@ export const Product = observer(() => {
     const currentColorProduct = store.currentColorProduct
     const sizes = store.sizes
     const navigate = useNavigate()
-
+    const notify = () => toast("товар добавлен в корзину!");
     const [color, setColor] = useState(currentProduct?.colors?.map(el => ({
         id: el.id,
         label: el.name,
@@ -35,6 +37,7 @@ export const Product = observer(() => {
 
     if (currentProduct && currentColorProduct?.sizes) {
         return (<div className={styles.container}>
+            <ToastContainer autoClose={1500} position="top-center" theme={'colored'} />
             <div>
                 <div>{currentProduct.name}</div>
                 <img className={styles.image} alt={currentColorProduct.name} src={currentColorProduct.images[0]}/>
@@ -69,6 +72,7 @@ export const Product = observer(() => {
                         /> : <div>На данную позицию нет размеров</div>}
                 </div>
                 <button disabled={!size || store.isBasket} onClick={() => {
+                    notify()
                     const productForBasket = {
                         name: store.currentProduct.name,
                         productIdUnical: uuidv4(),
