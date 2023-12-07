@@ -9,6 +9,7 @@ class DataStore {
     currentProduct = null
     currentColorProduct = null
     currentSize = null
+    isBasket = false
 
     constructor() {
         makeObservable(this, {
@@ -18,6 +19,7 @@ class DataStore {
             currentColorProduct: observable,
             sizes: observable,
             currentSize: observable,
+            isBasket:observable,
             getProducts: action,
             getProductById: action,
             getProductColor: action,
@@ -25,7 +27,13 @@ class DataStore {
             setCurrentSize: action,
             setProductInbasket: action,
             deleteProductFromBasket: action,
+            toggleIsBasketState:action,
+
         });
+    }
+
+    toggleIsBasketState(){
+        this.isBasket = false
     }
 
     deleteProductFromBasket(id) {
@@ -33,7 +41,19 @@ class DataStore {
     }
 
     setProductInbasket(product) {
-        this.productsInBasket.push(product)
+
+         const existingProductIndex = this.productsInBasket.findIndex(
+            (el) =>
+                el.productId === product.productId &&
+                el.color.id === product.color.id &&
+                el.size.id === product.size.id
+        );
+
+        if (existingProductIndex !== -1) {
+       this.isBasket = true
+        } else {
+            this.productsInBasket.push(product)
+        }
     }
 
     setCurrentSize(size) {

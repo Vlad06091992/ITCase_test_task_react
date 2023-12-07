@@ -7,14 +7,19 @@ import {observer} from "mobx-react";
 import {getSizeToViewModel} from "../../utils/getSizeToViewModel";
 import styles from './product.module.scss'
 import {toJS} from "mobx";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+
 export const Product = observer(() => {
     const {productId} = useParams()
     const currentProduct = store.currentProduct
     const currentColorProduct = store.currentColorProduct
     const sizes = store.sizes
 
-    const [color, setColor] = useState(currentProduct?.colors?.map(el => ({id: el.id, label: el.name, value: el.name}))[0])
+    const [color, setColor] = useState(currentProduct?.colors?.map(el => ({
+        id: el.id,
+        label: el.name,
+        value: el.name
+    }))[0])
     const [size, setSize] = useState(null)
 
     useEffect(() => {
@@ -41,8 +46,10 @@ export const Product = observer(() => {
             <div className={styles.selects}>
                 <div>
                     <Select className={styles.select} placeholder={'Выберите цвет'}
-                            defaultValue={color }
+                            defaultValue={color}
                             onChange={(color) => {
+                                store.toggleIsBasketState()
+
                                 setColor(color)
                                 setSize(null)
                                 store.getProductColor(productId, color.id)
@@ -50,21 +57,32 @@ export const Product = observer(() => {
                             options={currentProduct.colors.map(el => ({id: el.id, label: el.name, value: el.name}))}/>
                 </div>
                 <div>
-                    { currentColorProduct.sizes.length ? <Select  className={styles.select} value={size} escapeClearsValue={true} name={'2'} placeholder={'Выберите размер'}
+                    {currentColorProduct.sizes.length ?
+                        <Select className={styles.select} value={size} escapeClearsValue={true} name={'2'}
+                                placeholder={'Выберите размер'}
 
-                            onChange={(size) => {
-
-                                setSize(size)
-                                store.setCurrentSize(size.id)
-                            }}
-                            options={currentColorProduct?.sizes?.map(size => getSizeToViewModel(sizes, size))}
-                    /> : <div>На данную позицию нет размеров</div>}
+                                onChange={(size) => {
+                                    store.toggleIsBasketState()
+                                    setSize(size)
+                                    store.setCurrentSize(size.id)
+                                }}
+                                options={currentColorProduct?.sizes?.map(size => getSizeToViewModel(sizes, size))}
+                        /> : <div>На данную позицию нет размеров</div>}
                 </div>
-                <button disabled={!size} onClick={()=>{
-                    const productForBasket = {name:store.currentProduct.name,productIdUnical:uuidv4(),productId:store.currentProduct.id, color,size}
+                <button disabled={!size || store.isBasket} onClick={() => {
+                    const productForBasket = {
+                        name: store.currentProduct.name,
+                        productIdUnical: uuidv4(),
+                        productId: store.currentProduct.id,
+                        color,
+                        size
+                    }
                     store.setProductInbasket(productForBasket)
-                }}>Добавить в корзину</button>
+                }}>Добавить в корзину
+                </button>
             </div>
+            {store.isBasket && <p>Продукт уже был добавлен в корзину !!!</p>}
+
         </div>)
     } else {
         return <div>Loading...</div>;
