@@ -7,6 +7,7 @@ import './styles/index.css'
 import {observer} from "mobx-react";
 import {Products} from "./pages/products/products";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {Product} from "./pages/product/product";
 
 
 
@@ -20,10 +21,10 @@ const RootComponent = observer(() => {
                 path: '/products',
                 element: <Products/>,
             },
-                // {
-                //     path: '/product/:productId',
-                //     element: <ProductDetails/>
-                // }
+                {
+                    path: '/product/:productId',
+                    element: <Product/>
+                }
                 ]
         },
     ])
