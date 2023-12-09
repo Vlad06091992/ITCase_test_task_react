@@ -8,10 +8,10 @@ import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export const Basket = () => {
-    const productsInBasket = toJS(store.productsInBasket);
+    const productsInBasket = store.productsInBasket;
     const [products, setProducts] = useState(null);
     const navigate = useNavigate()
-
+    console.log('render')
     const notify = () => toast("товар удален из корзины!");
     const fetchData = async () => {
         try {

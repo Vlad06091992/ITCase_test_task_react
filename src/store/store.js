@@ -28,7 +28,6 @@ class DataStore {
             setProductInbasket: action,
             deleteProductFromBasket: action,
             toggleIsBasketState:action,
-
         });
     }
 
