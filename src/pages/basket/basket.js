@@ -6,12 +6,12 @@ import {useNavigate} from "react-router-dom";
 import styles from './basket.module.scss'
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {CardBasket} from "../../components/card-basket/card-basket";
 
 export const Basket = () => {
     const productsInBasket = store.productsInBasket;
     const [products, setProducts] = useState(null);
     const navigate = useNavigate()
-    console.log('render')
     const notify = () => toast("товар удален из корзины!");
     const fetchData = async () => {
         try {
@@ -45,16 +45,8 @@ export const Basket = () => {
                 }}>Вернуться к продуктам
                 </button>
                 <div className={styles.products}>
-                    {products.map((el) => (
-                        <div key={el.productIdUnical}>
-                            <img style={{maxWidth: '300px', height: "auto"}} src={el.images[0]} alt={el.name}/>
-                            <div>{el.name}</div>
-                            <div>{el.description}</div>
-                            <div>{el.size}</div>
-                            <button onClick={() =>{
-                                notify()
-                                handleDeleteProduct(el.productIdUnical)}}>Удалить товар</button>
-                        </div>
+                    {products.map((product) => (
+                       <CardBasket key={product.productIdUnical} handleDeleteProduct={handleDeleteProduct} notify={notify} {...product}/>
                     ))}
                 </div>
             </div>
