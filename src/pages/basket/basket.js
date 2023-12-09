@@ -1,4 +1,3 @@
-import {toJS} from "mobx";
 import {store} from "../../store/store";
 import {useEffect, useState} from "react";
 import {getProductByData} from "../../utils/getProductByData";
@@ -11,7 +10,6 @@ import {CardBasket} from "../../components/card-basket/card-basket";
 export const Basket = () => {
     const productsInBasket = store.productsInBasket;
     const [products, setProducts] = useState(null);
-    const navigate = useNavigate()
     const notify = () => toast("товар удален из корзины!");
     const fetchData = async () => {
         try {
@@ -41,10 +39,6 @@ export const Basket = () => {
         return (
             <div>
                 <ToastContainer autoClose={1500} position="top-center" theme={'colored'} />
-                <button className={styles.button} onClick={() => {
-                    navigate('../products')
-                }}>Вернуться к продуктам
-                </button>
                 <div className={styles.products}>
                     {products.map((product) => (
                        <CardBasket key={product.productIdUnical} handleDeleteProduct={handleDeleteProduct} notify={notify} {...product}/>
