@@ -80,6 +80,7 @@ export const Product = observer(() => {
                         color,
                         size
                     }
+
                     store.setProductInbasket(productForBasket)
                 }}>Добавить в корзину
                 </button>

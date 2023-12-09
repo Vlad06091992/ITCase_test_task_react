@@ -16,7 +16,7 @@ export const Basket = () => {
     const fetchData = async () => {
         try {
             const promisesArray = productsInBasket.map(async (el) => {
-                const productData = await getProductByData(el.productId, el.color.id, el.size.id, el.productIdUnical);
+                const productData = await getProductByData(el.productId, el.color.id, el.size.id, el.productIdUnical,el.name,el.color.label);
                 return productData;
             });
 
@@ -35,6 +35,7 @@ export const Basket = () => {
         store.deleteProductFromBasket(productIdUnical);
         fetchData();
     };
+
 
     if (products) {
         return (
