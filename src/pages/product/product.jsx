@@ -8,7 +8,7 @@ import styles from './product.module.scss'
 import {v4 as uuidv4} from 'uuid';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {set, toJS} from "mobx";
+import {toJS} from "mobx";
 
 export const Product = observer(() => {
 
@@ -25,13 +25,11 @@ export const Product = observer(() => {
         value: el.name
     }))[0])
     const [size, setSize] = useState(null)
-    console.log(color)
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await store.getSizes()
                 await store.getProductById(productId);
-                await store.getProductColor(productId, store.currentProduct?.colors[0]?.id)
+                Promise.all([store.getProductColor(productId, store.currentProduct?.colors[0]?.id),store.getSizes()])
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -46,13 +44,14 @@ export const Product = observer(() => {
     }, []);
 
 
-    if (currentProduct && currentColorProduct) {
+    if (currentProduct && currentColorProduct?.sizes) {
         return (<div className={styles.container}>
             {!isBasket && <ToastContainer autoClose={500} position="top-center" theme={'colored'} />}
             <div>
                 <div>{currentProduct.name}</div>
-                {currentColorProduct.images.map(el=> <img key={el}  className={styles.image} alt={currentColorProduct.name} src={el}/>)}
+                {currentColorProduct.images.map(el=> <img key={el} className={styles.image} alt={currentColorProduct.name} src={el}/>)}
                 <div>Цена : {currentColorProduct.price}</div>
+
             </div>
             <div className={styles.selects}>
                 <div>
@@ -69,6 +68,7 @@ export const Product = observer(() => {
                     {currentColorProduct.sizes.length ?
                         <Select className={styles.select} value={size} escapeClearsValue={true} name={'2'}
                                 placeholder={'Выберите размер'}
+
                                 onChange={(size) => {
                                     store.toggleIsBasketState()
                                     setSize(size)
@@ -77,7 +77,7 @@ export const Product = observer(() => {
                                 options={currentColorProduct?.sizes?.map(size => getSizeToViewModel(sizes, size))}
                         /> : <div>На данную позицию нет размеров</div>}
                 </div>
-                <button disabled={!size || !color|| isBasket} onClick={() => {
+                <button disabled={!size || isBasket} onClick={() => {
                     notify()
                     const productForBasket = {
                         name: store.currentProduct.name,
