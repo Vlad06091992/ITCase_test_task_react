@@ -9,9 +9,7 @@ const navigate = useNavigate()
         <img className={styles.image} src={props.product.colors[0].images[0]}/>
  <div>
 
-     <button onClick={async ()=>{
-         await store.getProductById(props.product.id);
-         await store.getSizes();
+     <button onClick={()=>{
          navigate(`../product/${props.product.id}`)
      }}>Подробнее</button>
 

@@ -23,15 +23,25 @@ export const Product = observer(() => {
     }))[0])
     const [size, setSize] = useState(null)
 
+    console.log(currentProduct)
+    console.log(currentColorProduct)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+                await store.getProductById(productId);
                 await store.getProductColor(productId, store.currentProduct?.colors[0]?.id);
+                await store.getSizes();
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         };
         fetchData()
+
+        return ()=>{
+            store.setCurrentColorProduct(null)
+        }
+
     }, []);
 
 
