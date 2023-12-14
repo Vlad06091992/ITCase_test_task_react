@@ -56,7 +56,6 @@ export const Product = observer(() => {
             <div className={styles.selects}>
                 <div>
                     <Select className={styles.select} placeholder={'Выберите цвет'}
-                            defaultValue={color}
                             onChange={(color) => {
                                 store.toggleIsBasketState()
                                 setColor(color)
@@ -68,7 +67,6 @@ export const Product = observer(() => {
                     {currentColorProduct.sizes.length ?
                         <Select className={styles.select} value={size} escapeClearsValue={true} name={'2'}
                                 placeholder={'Выберите размер'}
-
                                 onChange={(size) => {
                                     store.toggleIsBasketState()
                                     setSize(size)
