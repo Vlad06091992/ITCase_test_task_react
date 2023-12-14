@@ -27,6 +27,7 @@ class DataStore {
             setCurrentSize: action,
             setProductInbasket: action,
             setCurrentColorProduct:action,
+            setCurrentProduct:action,
             deleteProductFromBasket: action,
             toggleIsBasketState:action,
         });
@@ -58,6 +59,10 @@ class DataStore {
 
     setCurrentColorProduct(product) {
         this.currentColorProduct = product
+    }
+
+    setCurrentProduct(product) {
+        this.currentProduct = product
     }
 
 
