@@ -29,7 +29,8 @@ export const Product = observer(() => {
         const fetchData = async () => {
             try {
                 await store.getProductById(productId);
-                Promise.all([store.getProductColor(productId, store.currentProduct?.colors[0]?.id),store.getSizes()])
+                await store.getProductColor(productId, store.currentProduct?.colors[0]?.id)
+                await store.getSizes()
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -39,6 +40,7 @@ export const Product = observer(() => {
         return ()=>{
             store.setCurrentColorProduct(null)
             setColor(null)
+            setSize(null)
         }
 
     }, []);
@@ -59,6 +61,7 @@ export const Product = observer(() => {
                             onChange={(color) => {
                                 store.toggleIsBasketState()
                                 setColor(color)
+                                setSize(null)
                                 store.getProductColor(productId, color.id)
                             }}
                             options={currentProduct.colors.map(el => ({id: el.id, label: el.name, value: el.name}))}/>
@@ -75,7 +78,7 @@ export const Product = observer(() => {
                                 options={currentColorProduct?.sizes?.map(size => getSizeToViewModel(sizes, size))}
                         /> : <div>На данную позицию нет размеров</div>}
                 </div>
-                <button disabled={!size || isBasket} onClick={() => {
+                <button disabled={!size || !color || isBasket} onClick={() => {
                     notify()
                     const productForBasket = {
                         name: store.currentProduct.name,
