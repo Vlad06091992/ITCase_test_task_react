@@ -28,9 +28,9 @@ export const Product = observer(() => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                await store.getSizes()
                 await store.getProductById(productId);
                 await store.getProductColor(productId, store.currentProduct?.colors[0]?.id)
-                await store.getSizes()
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -46,7 +46,7 @@ export const Product = observer(() => {
     }, []);
 
 
-    if (currentProduct && currentColorProduct?.sizes) {
+    if (currentProduct && currentColorProduct) {
         return (<div className={styles.container}>
             {!isBasket && <ToastContainer autoClose={500} position="top-center" theme={'colored'} />}
             <div>
