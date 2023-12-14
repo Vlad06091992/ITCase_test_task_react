@@ -38,7 +38,7 @@ export const Basket = () => {
     if (products) {
         return (
             <div>
-                <ToastContainer autoClose={1500} position="top-center" theme={'colored'} />
+                <ToastContainer autoClose={500} position="top-center" theme={'colored'} />
                 <div className={styles.products}>
                     {products.map((product) => (
                        <CardBasket key={product.productIdUnical} handleDeleteProduct={handleDeleteProduct} notify={notify} {...product}/>

@@ -8,13 +8,16 @@ import styles from './product.module.scss'
 import {v4 as uuidv4} from 'uuid';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {toJS} from "mobx";
 
 export const Product = observer(() => {
+
     const {productId} = useParams()
     const currentProduct = store.currentProduct
     const currentColorProduct = store.currentColorProduct
     const sizes = store.sizes
     const navigate = useNavigate()
+    const isBasket = store.isBasket
     const notify = () => toast("товар добавлен в корзину!");
     const [color, setColor] = useState(currentProduct?.colors?.map(el => ({
         id: el.id,
@@ -22,16 +25,11 @@ export const Product = observer(() => {
         value: el.name
     }))[0])
     const [size, setSize] = useState(null)
-
-    console.log(currentProduct)
-    console.log(currentColorProduct)
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 await store.getProductById(productId);
-                await store.getProductColor(productId, store.currentProduct?.colors[0]?.id);
-                await store.getSizes();
+                Promise.all([store.getProductColor(productId, store.currentProduct?.colors[0]?.id),store.getSizes()])
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -47,11 +45,10 @@ export const Product = observer(() => {
 
     if (currentProduct && currentColorProduct?.sizes) {
         return (<div className={styles.container}>
-            <ToastContainer autoClose={1500} position="top-center" theme={'colored'} />
+            {!isBasket && <ToastContainer autoClose={500} position="top-center" theme={'colored'} />}
             <div>
                 <div>{currentProduct.name}</div>
-                <img className={styles.image} alt={currentColorProduct.name} src={currentColorProduct.images[0]}/>
-                <img className={styles.image} alt={currentColorProduct.name} src={currentColorProduct.images[1]}/>
+                {currentColorProduct.images.map(el=> <img key={el} className={styles.image} alt={currentColorProduct.name} src={el}/>)}
                 <div>Цена : {currentColorProduct.price}</div>
 
             </div>
@@ -61,7 +58,6 @@ export const Product = observer(() => {
                             defaultValue={color}
                             onChange={(color) => {
                                 store.toggleIsBasketState()
-
                                 setColor(color)
                                 setSize(null)
                                 store.getProductColor(productId, color.id)
@@ -81,7 +77,7 @@ export const Product = observer(() => {
                                 options={currentColorProduct?.sizes?.map(size => getSizeToViewModel(sizes, size))}
                         /> : <div>На данную позицию нет размеров</div>}
                 </div>
-                <button disabled={!size || store.isBasket} onClick={() => {
+                <button disabled={!size || isBasket} onClick={() => {
                     notify()
                     const productForBasket = {
                         name: store.currentProduct.name,
@@ -95,7 +91,7 @@ export const Product = observer(() => {
                 }}>Добавить в корзину
                 </button>
             </div>
-            {store.isBasket && <p>Продукт уже был добавлен в корзину !!!</p>}
+            {isBasket && <p>Продукт уже был добавлен в корзину !!!</p>}
             <button onClick={()=>{navigate('../products')}}>Вернуться к продуктам</button>
         </div>)
     } else {
